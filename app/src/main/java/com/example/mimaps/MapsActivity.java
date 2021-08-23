@@ -27,7 +27,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double latitud, longitud;
     SharedPreferences preferences;
     private Button btnFavorito;
-    private Button btnlimpiar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnFavorito=(Button) findViewById(R.id.fav);
         btnFavorito.setOnClickListener(this);
 
-        btnlimpiar=(Button) findViewById(R.id.limp);
-        btnlimpiar.setOnClickListener(this);
+
 
     }
 
