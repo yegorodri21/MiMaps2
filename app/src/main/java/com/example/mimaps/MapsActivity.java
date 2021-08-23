@@ -27,6 +27,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double latitud, longitud;
     SharedPreferences preferences;
     private Button btnFavorito;
+    private Button btnlimpiar;
+    private Button btnalterno;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +45,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         btnFavorito=(Button) findViewById(R.id.fav);
         btnFavorito.setOnClickListener(this);
+        btnlimpiar=(Button) findViewById(R.id.limp);
+        btnlimpiar.setOnClickListener(this);
+        btnalterno=(Button) findViewById(R.id.ub);
+        btnalterno.setOnClickListener(this);
 
 
 
     }
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -68,13 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //agrego un marca con la ubicacion
         mMap.addMarker(new MarkerOptions().position(miUbicacion).title("Mi ubicacion"));
-        //mover la camara a mi ubicacion
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion));
+
         //habilito los controles del zoom
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //doy zoom 16 para que se acerque
         CameraUpdate ZoomCam=CameraUpdateFactory.zoomTo(16);
         mMap.animateCamera(ZoomCam);
+        //mover la camara a mi ubicacion
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion));
+
 
         // fijo el long click al mapa
         mMap.setOnMapLongClickListener(this);
@@ -85,14 +84,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapLongClick(LatLng latLng) {
         Toast.makeText(MapsActivity.this,
                 "Click posición"+latLng.latitude+latLng.longitude,Toast.LENGTH_SHORT).show();
-        mMap.addMarker(new MarkerOptions().title("Marcador").position(latLng)
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Marcador").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marcador_foreground))
         //colocar Icono como señalizacion
-        // .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marcador)).anchor(0.0f,1.0f)
+        // .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marcador_foreground)).anchor(0.0f,1.0f)
         );
         guardaPreferencias(latLng);
     }
     public void guardaPreferencias(LatLng latLng){
-
 
         SharedPreferences.Editor editor=preferences.edit();
         editor.putFloat("latitud",(float) latLng.latitude);
@@ -126,12 +124,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     @Override
     public void onClick(View v) {
+        if (v==btnalterno){
+            cargarPreferencias();
+        }
+        else
         if (v==btnFavorito){
             cargarPreferencias();
         }
-        else{
+        else if(v==btnlimpiar){
             AlertDialog.Builder alert=new AlertDialog.Builder(this);
-            alert.setTitle("Sitio eliminado");
+            alert.setTitle("Marcas eliminadas");
             alert.setPositiveButton("OK",null);
             alert.create().show();
             //markerName.remove();
