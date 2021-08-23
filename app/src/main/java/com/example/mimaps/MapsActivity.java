@@ -65,15 +65,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //agrego un marca con la ubicacion
         mMap.addMarker(new MarkerOptions().position(miUbicacion).title("Mi ubicacion"));
-
+        //mover la camara a mi ubicacion
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion));
         //habilito los controles del zoom
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //doy zoom 16 para que se acerque
         CameraUpdate ZoomCam=CameraUpdateFactory.zoomTo(16);
         mMap.animateCamera(ZoomCam);
-        //mover la camara a mi ubicacion
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion));
-
 
         // fijo el long click al mapa
         mMap.setOnMapLongClickListener(this);
@@ -84,9 +82,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapLongClick(LatLng latLng) {
         Toast.makeText(MapsActivity.this,
                 "Click posición"+latLng.latitude+latLng.longitude,Toast.LENGTH_SHORT).show();
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Marcador").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marcador_foreground))
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Marcador").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
         //colocar Icono como señalizacion
-        // .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marcador_foreground)).anchor(0.0f,1.0f)
+                // .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marcador_foreground)).anchor(0.0f,1.0f)
+        //cambiar de color la marca
+                //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
         );
         guardaPreferencias(latLng);
     }
